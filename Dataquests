@@ -1,0 +1,877 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "Untitled9.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyMdl8NCaqe2L7kAONA4qRZr",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/Monisha09-ds/ML-Projects/blob/main/Dataquests\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 49,
+      "metadata": {
+        "id": "avPqwl6QtY-W"
+      },
+      "outputs": [],
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import seaborn as sns\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df=pd.read_csv('teams.csv')\n",
+        "df.head()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 206
+        },
+        "id": "pVMAv6Tdtmfu",
+        "outputId": "9c01de12-95e7-482c-ccb2-3fee24914090"
+      },
+      "execution_count": 50,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "  team      country  year  events  athletes   age  height  weight  medals  \\\n",
+              "0  AFG  Afghanistan  1964       8         8  22.0   161.0    64.2       0   \n",
+              "1  AFG  Afghanistan  1968       5         5  23.2   170.2    70.0       0   \n",
+              "2  AFG  Afghanistan  1972       8         8  29.0   168.3    63.8       0   \n",
+              "3  AFG  Afghanistan  1980      11        11  23.6   168.4    63.2       0   \n",
+              "4  AFG  Afghanistan  2004       5         5  18.6   170.8    64.8       0   \n",
+              "\n",
+              "   prev_medals  prev_3_medals  \n",
+              "0          0.0            0.0  \n",
+              "1          0.0            0.0  \n",
+              "2          0.0            0.0  \n",
+              "3          0.0            0.0  \n",
+              "4          0.0            0.0  "
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-d39c9409-dba4-49c1-aa06-4cd6eb442535\">\n",
+              "    <div class=\"colab-df-container\">\n",
+              "      <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>team</th>\n",
+              "      <th>country</th>\n",
+              "      <th>year</th>\n",
+              "      <th>events</th>\n",
+              "      <th>athletes</th>\n",
+              "      <th>age</th>\n",
+              "      <th>height</th>\n",
+              "      <th>weight</th>\n",
+              "      <th>medals</th>\n",
+              "      <th>prev_medals</th>\n",
+              "      <th>prev_3_medals</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>0</th>\n",
+              "      <td>AFG</td>\n",
+              "      <td>Afghanistan</td>\n",
+              "      <td>1964</td>\n",
+              "      <td>8</td>\n",
+              "      <td>8</td>\n",
+              "      <td>22.0</td>\n",
+              "      <td>161.0</td>\n",
+              "      <td>64.2</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.0</td>\n",
+              "      <td>0.0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>1</th>\n",
+              "      <td>AFG</td>\n",
+              "      <td>Afghanistan</td>\n",
+              "      <td>1968</td>\n",
+              "      <td>5</td>\n",
+              "      <td>5</td>\n",
+              "      <td>23.2</td>\n",
+              "      <td>170.2</td>\n",
+              "      <td>70.0</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.0</td>\n",
+              "      <td>0.0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>2</th>\n",
+              "      <td>AFG</td>\n",
+              "      <td>Afghanistan</td>\n",
+              "      <td>1972</td>\n",
+              "      <td>8</td>\n",
+              "      <td>8</td>\n",
+              "      <td>29.0</td>\n",
+              "      <td>168.3</td>\n",
+              "      <td>63.8</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.0</td>\n",
+              "      <td>0.0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>3</th>\n",
+              "      <td>AFG</td>\n",
+              "      <td>Afghanistan</td>\n",
+              "      <td>1980</td>\n",
+              "      <td>11</td>\n",
+              "      <td>11</td>\n",
+              "      <td>23.6</td>\n",
+              "      <td>168.4</td>\n",
+              "      <td>63.2</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.0</td>\n",
+              "      <td>0.0</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>4</th>\n",
+              "      <td>AFG</td>\n",
+              "      <td>Afghanistan</td>\n",
+              "      <td>2004</td>\n",
+              "      <td>5</td>\n",
+              "      <td>5</td>\n",
+              "      <td>18.6</td>\n",
+              "      <td>170.8</td>\n",
+              "      <td>64.8</td>\n",
+              "      <td>0</td>\n",
+              "      <td>0.0</td>\n",
+              "      <td>0.0</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "      <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-d39c9409-dba4-49c1-aa06-4cd6eb442535')\"\n",
+              "              title=\"Convert this dataframe to an interactive table.\"\n",
+              "              style=\"display:none;\">\n",
+              "        \n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "       width=\"24px\">\n",
+              "    <path d=\"M0 0h24v24H0V0z\" fill=\"none\"/>\n",
+              "    <path d=\"M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z\"/><path d=\"M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z\"/>\n",
+              "  </svg>\n",
+              "      </button>\n",
+              "      \n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      flex-wrap:wrap;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "      <script>\n",
+              "        const buttonEl =\n",
+              "          document.querySelector('#df-d39c9409-dba4-49c1-aa06-4cd6eb442535 button.colab-df-convert');\n",
+              "        buttonEl.style.display =\n",
+              "          google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "        async function convertToInteractive(key) {\n",
+              "          const element = document.querySelector('#df-d39c9409-dba4-49c1-aa06-4cd6eb442535');\n",
+              "          const dataTable =\n",
+              "            await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                     [key], {});\n",
+              "          if (!dataTable) return;\n",
+              "\n",
+              "          const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "            '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "            + ' to learn more about interactive tables.';\n",
+              "          element.innerHTML = '';\n",
+              "          dataTable['output_type'] = 'display_data';\n",
+              "          await google.colab.output.renderOutput(dataTable, element);\n",
+              "          const docLink = document.createElement('div');\n",
+              "          docLink.innerHTML = docLinkHtml;\n",
+              "          element.appendChild(docLink);\n",
+              "        }\n",
+              "      </script>\n",
+              "    </div>\n",
+              "  </div>\n",
+              "  "
+            ]
+          },
+          "metadata": {},
+          "execution_count": 50
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.columns"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "PPTiSNTBtmi_",
+        "outputId": "4bd98a8a-a7b6-471e-cda7-ef3a98dc073c"
+      },
+      "execution_count": 51,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['team', 'country', 'year', 'events', 'athletes', 'age', 'height',\n",
+              "       'weight', 'medals', 'prev_medals', 'prev_3_medals'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 51
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.shape"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "housWb5Otmmj",
+        "outputId": "dae2fe69-b4f5-45d5-f0dd-b5d9061c1b2a"
+      },
+      "execution_count": 52,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(2144, 11)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 52
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.isnull().sum()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "BERTOU6jtyWO",
+        "outputId": "e2f8b101-7dbe-4360-a006-459922712a39"
+      },
+      "execution_count": 53,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "team               0\n",
+              "country            0\n",
+              "year               0\n",
+              "events             0\n",
+              "athletes           0\n",
+              "age                0\n",
+              "height             0\n",
+              "weight             0\n",
+              "medals             0\n",
+              "prev_medals      130\n",
+              "prev_3_medals    130\n",
+              "dtype: int64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 53
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.describe()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 364
+        },
+        "id": "emdZ3GOjvbIG",
+        "outputId": "2338ff93-fc99-4a40-f6da-7b79923f8f82"
+      },
+      "execution_count": 54,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "              year       events     athletes          age       height  \\\n",
+              "count  2144.000000  2144.000000  2144.000000  2144.000000  2144.000000   \n",
+              "mean   1994.507463    35.724813    73.693097    24.778591   173.900233   \n",
+              "std      15.384205    49.490270   127.907577     2.808559     5.357367   \n",
+              "min    1964.000000     1.000000     1.000000    17.000000   151.000000   \n",
+              "25%    1984.000000     6.000000     7.000000    23.275000   170.500000   \n",
+              "50%    1996.000000    13.000000    19.000000    24.700000   174.400000   \n",
+              "75%    2008.000000    44.000000    70.250000    26.100000   177.300000   \n",
+              "max    2016.000000   270.000000   839.000000    66.000000   193.000000   \n",
+              "\n",
+              "            weight       medals  prev_medals  prev_3_medals  \n",
+              "count  2144.000000  2144.000000  2014.000000    2014.000000  \n",
+              "mean     69.271595    10.556437    10.248759       9.449901  \n",
+              "std       7.606507    33.028143    31.951920      28.232227  \n",
+              "min      43.000000     0.000000     0.000000       0.000000  \n",
+              "25%      64.500000     0.000000     0.000000       0.000000  \n",
+              "50%      69.400000     0.000000     0.000000       0.300000  \n",
+              "75%      73.400000     4.000000     4.000000       4.650000  \n",
+              "max     148.000000   442.000000   442.000000     314.000000  "
+            ],
+            "text/html": [
+              "\n",
+              "  <div id=\"df-c5b24c2c-e0f3-4f8e-9248-c2b950b4cb38\">\n",
+              "    <div class=\"colab-df-container\">\n",
+              "      <div>\n",
+              "<style scoped>\n",
+              "    .dataframe tbody tr th:only-of-type {\n",
+              "        vertical-align: middle;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe tbody tr th {\n",
+              "        vertical-align: top;\n",
+              "    }\n",
+              "\n",
+              "    .dataframe thead th {\n",
+              "        text-align: right;\n",
+              "    }\n",
+              "</style>\n",
+              "<table border=\"1\" class=\"dataframe\">\n",
+              "  <thead>\n",
+              "    <tr style=\"text-align: right;\">\n",
+              "      <th></th>\n",
+              "      <th>year</th>\n",
+              "      <th>events</th>\n",
+              "      <th>athletes</th>\n",
+              "      <th>age</th>\n",
+              "      <th>height</th>\n",
+              "      <th>weight</th>\n",
+              "      <th>medals</th>\n",
+              "      <th>prev_medals</th>\n",
+              "      <th>prev_3_medals</th>\n",
+              "    </tr>\n",
+              "  </thead>\n",
+              "  <tbody>\n",
+              "    <tr>\n",
+              "      <th>count</th>\n",
+              "      <td>2144.000000</td>\n",
+              "      <td>2144.000000</td>\n",
+              "      <td>2144.000000</td>\n",
+              "      <td>2144.000000</td>\n",
+              "      <td>2144.000000</td>\n",
+              "      <td>2144.000000</td>\n",
+              "      <td>2144.000000</td>\n",
+              "      <td>2014.000000</td>\n",
+              "      <td>2014.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>mean</th>\n",
+              "      <td>1994.507463</td>\n",
+              "      <td>35.724813</td>\n",
+              "      <td>73.693097</td>\n",
+              "      <td>24.778591</td>\n",
+              "      <td>173.900233</td>\n",
+              "      <td>69.271595</td>\n",
+              "      <td>10.556437</td>\n",
+              "      <td>10.248759</td>\n",
+              "      <td>9.449901</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>std</th>\n",
+              "      <td>15.384205</td>\n",
+              "      <td>49.490270</td>\n",
+              "      <td>127.907577</td>\n",
+              "      <td>2.808559</td>\n",
+              "      <td>5.357367</td>\n",
+              "      <td>7.606507</td>\n",
+              "      <td>33.028143</td>\n",
+              "      <td>31.951920</td>\n",
+              "      <td>28.232227</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>min</th>\n",
+              "      <td>1964.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>1.000000</td>\n",
+              "      <td>17.000000</td>\n",
+              "      <td>151.000000</td>\n",
+              "      <td>43.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>25%</th>\n",
+              "      <td>1984.000000</td>\n",
+              "      <td>6.000000</td>\n",
+              "      <td>7.000000</td>\n",
+              "      <td>23.275000</td>\n",
+              "      <td>170.500000</td>\n",
+              "      <td>64.500000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>50%</th>\n",
+              "      <td>1996.000000</td>\n",
+              "      <td>13.000000</td>\n",
+              "      <td>19.000000</td>\n",
+              "      <td>24.700000</td>\n",
+              "      <td>174.400000</td>\n",
+              "      <td>69.400000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.000000</td>\n",
+              "      <td>0.300000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>75%</th>\n",
+              "      <td>2008.000000</td>\n",
+              "      <td>44.000000</td>\n",
+              "      <td>70.250000</td>\n",
+              "      <td>26.100000</td>\n",
+              "      <td>177.300000</td>\n",
+              "      <td>73.400000</td>\n",
+              "      <td>4.000000</td>\n",
+              "      <td>4.000000</td>\n",
+              "      <td>4.650000</td>\n",
+              "    </tr>\n",
+              "    <tr>\n",
+              "      <th>max</th>\n",
+              "      <td>2016.000000</td>\n",
+              "      <td>270.000000</td>\n",
+              "      <td>839.000000</td>\n",
+              "      <td>66.000000</td>\n",
+              "      <td>193.000000</td>\n",
+              "      <td>148.000000</td>\n",
+              "      <td>442.000000</td>\n",
+              "      <td>442.000000</td>\n",
+              "      <td>314.000000</td>\n",
+              "    </tr>\n",
+              "  </tbody>\n",
+              "</table>\n",
+              "</div>\n",
+              "      <button class=\"colab-df-convert\" onclick=\"convertToInteractive('df-c5b24c2c-e0f3-4f8e-9248-c2b950b4cb38')\"\n",
+              "              title=\"Convert this dataframe to an interactive table.\"\n",
+              "              style=\"display:none;\">\n",
+              "        \n",
+              "  <svg xmlns=\"http://www.w3.org/2000/svg\" height=\"24px\"viewBox=\"0 0 24 24\"\n",
+              "       width=\"24px\">\n",
+              "    <path d=\"M0 0h24v24H0V0z\" fill=\"none\"/>\n",
+              "    <path d=\"M18.56 5.44l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94zm-11 1L8.5 8.5l.94-2.06 2.06-.94-2.06-.94L8.5 2.5l-.94 2.06-2.06.94zm10 10l.94 2.06.94-2.06 2.06-.94-2.06-.94-.94-2.06-.94 2.06-2.06.94z\"/><path d=\"M17.41 7.96l-1.37-1.37c-.4-.4-.92-.59-1.43-.59-.52 0-1.04.2-1.43.59L10.3 9.45l-7.72 7.72c-.78.78-.78 2.05 0 2.83L4 21.41c.39.39.9.59 1.41.59.51 0 1.02-.2 1.41-.59l7.78-7.78 2.81-2.81c.8-.78.8-2.07 0-2.86zM5.41 20L4 18.59l7.72-7.72 1.47 1.35L5.41 20z\"/>\n",
+              "  </svg>\n",
+              "      </button>\n",
+              "      \n",
+              "  <style>\n",
+              "    .colab-df-container {\n",
+              "      display:flex;\n",
+              "      flex-wrap:wrap;\n",
+              "      gap: 12px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert {\n",
+              "      background-color: #E8F0FE;\n",
+              "      border: none;\n",
+              "      border-radius: 50%;\n",
+              "      cursor: pointer;\n",
+              "      display: none;\n",
+              "      fill: #1967D2;\n",
+              "      height: 32px;\n",
+              "      padding: 0 0 0 0;\n",
+              "      width: 32px;\n",
+              "    }\n",
+              "\n",
+              "    .colab-df-convert:hover {\n",
+              "      background-color: #E2EBFA;\n",
+              "      box-shadow: 0px 1px 2px rgba(60, 64, 67, 0.3), 0px 1px 3px 1px rgba(60, 64, 67, 0.15);\n",
+              "      fill: #174EA6;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert {\n",
+              "      background-color: #3B4455;\n",
+              "      fill: #D2E3FC;\n",
+              "    }\n",
+              "\n",
+              "    [theme=dark] .colab-df-convert:hover {\n",
+              "      background-color: #434B5C;\n",
+              "      box-shadow: 0px 1px 3px 1px rgba(0, 0, 0, 0.15);\n",
+              "      filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.3));\n",
+              "      fill: #FFFFFF;\n",
+              "    }\n",
+              "  </style>\n",
+              "\n",
+              "      <script>\n",
+              "        const buttonEl =\n",
+              "          document.querySelector('#df-c5b24c2c-e0f3-4f8e-9248-c2b950b4cb38 button.colab-df-convert');\n",
+              "        buttonEl.style.display =\n",
+              "          google.colab.kernel.accessAllowed ? 'block' : 'none';\n",
+              "\n",
+              "        async function convertToInteractive(key) {\n",
+              "          const element = document.querySelector('#df-c5b24c2c-e0f3-4f8e-9248-c2b950b4cb38');\n",
+              "          const dataTable =\n",
+              "            await google.colab.kernel.invokeFunction('convertToInteractive',\n",
+              "                                                     [key], {});\n",
+              "          if (!dataTable) return;\n",
+              "\n",
+              "          const docLinkHtml = 'Like what you see? Visit the ' +\n",
+              "            '<a target=\"_blank\" href=https://colab.research.google.com/notebooks/data_table.ipynb>data table notebook</a>'\n",
+              "            + ' to learn more about interactive tables.';\n",
+              "          element.innerHTML = '';\n",
+              "          dataTable['output_type'] = 'display_data';\n",
+              "          await google.colab.output.renderOutput(dataTable, element);\n",
+              "          const docLink = document.createElement('div');\n",
+              "          docLink.innerHTML = docLinkHtml;\n",
+              "          element.appendChild(docLink);\n",
+              "        }\n",
+              "      </script>\n",
+              "    </div>\n",
+              "  </div>\n",
+              "  "
+            ]
+          },
+          "metadata": {},
+          "execution_count": 54
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.columns"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "weAGLL6uwf7a",
+        "outputId": "d44ec71b-cd3d-43a5-a279-3a4a8c0a4e64"
+      },
+      "execution_count": 55,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['team', 'country', 'year', 'events', 'athletes', 'age', 'height',\n",
+              "       'weight', 'medals', 'prev_medals', 'prev_3_medals'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 55
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df=df[['team', 'country', 'year','athletes', 'age','medals', 'prev_medals']]\n"
+      ],
+      "metadata": {
+        "id": "XeZTMgsTu7QI"
+      },
+      "execution_count": 57,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.corr()['medals']"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "nrzVlu-0u7cc",
+        "outputId": "e81c7b12-f003-46af-e28d-e3ce3d601fca"
+      },
+      "execution_count": 58,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "year          -0.021603\n",
+              "athletes       0.840817\n",
+              "age            0.025096\n",
+              "medals         1.000000\n",
+              "prev_medals    0.920048\n",
+              "Name: medals, dtype: float64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 58
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "sns.heatmap(df.corr(),data=df,annot=True)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 287
+        },
+        "id": "VY-adyLmw1kc",
+        "outputId": "ff16de07-3934-4aef-987a-683951d7a69c"
+      },
+      "execution_count": 62,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "<matplotlib.axes._subplots.AxesSubplot at 0x7faf1c7b9650>"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 62
+        },
+        {
+          "output_type": "display_data",
+          "data": {
+            "text/plain": [
+              "<Figure size 432x288 with 2 Axes>"
+            ],
+            "image/png": "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\n"
+          },
+          "metadata": {
+            "needs_background": "light"
+          }
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.isnull().sum()"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "NoI6CSHsxd9I",
+        "outputId": "aede9d71-4c72-4715-d16a-e2bc93981b06"
+      },
+      "execution_count": 63,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "team             0\n",
+              "country          0\n",
+              "year             0\n",
+              "athletes         0\n",
+              "age              0\n",
+              "medals           0\n",
+              "prev_medals    130\n",
+              "dtype: int64"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 63
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df=df.dropna()"
+      ],
+      "metadata": {
+        "id": "p8SHkpiSxeAM"
+      },
+      "execution_count": 64,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.shape"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "tNRGCXjmxt6n",
+        "outputId": "b10297c9-4cca-49f2-f8b2-407a630d2a4a"
+      },
+      "execution_count": 65,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "(2014, 7)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 65
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(max(df.year))\n",
+        "print(min(df.year))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "U5wdKGj3xeDk",
+        "outputId": "6ed8eae6-301e-4d48-aba3-efcb65a2d7d6"
+      },
+      "execution_count": 66,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "2016\n",
+            "1964\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "train=df[df.year <2012].copy()\n",
+        "test=df[df.year>=2012].copy()"
+      ],
+      "metadata": {
+        "id": "1xQEwqUaw1uD"
+      },
+      "execution_count": 72,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(train.shape)\n",
+        "print(test.shape)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "anND-_wCy6Wf",
+        "outputId": "e8b4cce3-0c8e-442d-f2b6-0698b4c141bc"
+      },
+      "execution_count": 73,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "(1609, 7)\n",
+            "(405, 7)\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "**Accuracy Metrics**"
+      ],
+      "metadata": {
+        "id": "JFNkMCKFzBLj"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        ""
+      ],
+      "metadata": {
+        "id": "i6F6xQiBzALN"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ]
+}
